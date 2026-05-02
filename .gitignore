@@ -27,8 +27,8 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-src/main/java/JavierTests.java
-src/main/clojure/JavierTests.clj
+/src/main/java/Javier.java
+/src/main/clojure/Javier.clj
 
 ### VS Code ###
 .vscode/
