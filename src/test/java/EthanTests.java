@@ -17,7 +17,7 @@ class EthanTests {
     /**
      * =====ROLES=====
      *
-     * Ethan = [Member and Append -> CLOJURE AND JAVA] 
+     * Ethan = [Member and Append -> CLOJURE AND JAVA]
      * Javier = [Intersect -> JAVA AND CLOJURE, Same -> JAVA]
      * Alex: = [Map -> JAVA AND CLOJURE, Same -> CLOJURE]
      */
@@ -31,6 +31,10 @@ class EthanTests {
         member = Clojure.var("Ethan", "member");
         append = Clojure.var("Ethan", "append");
     }
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
 
     // Helper method - starts recursion at 0
     boolean callMember(Object check, Object[] arr){
