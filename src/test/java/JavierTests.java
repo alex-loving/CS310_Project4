@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,9 +28,9 @@ class JavierTests {
     static void requires() {
         var require = Clojure.var("clojure.core", "require");
 
-        require.invoke(Clojure.read("Javier"));
-        intersect = Clojure.var("Javier", "intersect");
-        same = Clojure.var("Javier", "same");
+        require.invoke(Clojure.read("JaviIntersect"));
+        intersect = Clojure.var("JaviIntersect", "intersect");
+        same = Clojure.var("JaviSame", "same");
     }
 
     // =========================================================
@@ -107,78 +108,79 @@ class JavierTests {
 
         @Test
         void basicOverlapJava() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {2, 3, 4};
+            List<Object> list1 = List.of(1, 2, 3);
+            List<Object> list2 = List.of(2, 3, 4);
 
-            assertArrayEquals(
-                    new Object[]{2, 3},
-                    Javier.intersect(arr1, arr2, 0)
+            assertEquals(
+                    List.of(2, 3),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
 
         @Test
         void noOverlapJava() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {4, 5, 6};
+            List<Object> list1 = List.of(1, 2, 3);
+            List<Object> list2 = List.of(4, 5, 6);
 
-            assertArrayEquals(
-                    new Object[]{},
-                    Javier.intersect(arr1, arr2, 0)
+            assertEquals(
+                    List.of(),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
 
         @Test
         void identicalListsJava() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {1, 2, 3};
 
-            assertArrayEquals(
-                    new Object[]{1, 2, 3},
-                    Javier.intersect(arr1, arr2, 0)
+            List<Object> list1 = List.of(1, 2, 3);
+            List<Object> list2 = List.of(1, 2, 3);
+
+            assertEquals(
+                    List.of(1, 2, 3),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
 
         @Test
         void firstEmptyJava() {
-            Object[] arr1 = {};
-            Object[] arr2 = {1, 2, 3};
+            List<Object> list1 = List.of();
+            List<Object> list2 = List.of(1, 2, 3);
 
-            assertArrayEquals(
-                    new Object[]{},
-                    Javier.intersect(arr1, arr2, 0)
+            assertEquals(
+                    List.of(),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
 
         @Test
         void secondEmptyJava() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {};
+            List<Object> list1 = List.of(1, 2, 3);
+            List<Object> list2 = List.of();
 
-            assertArrayEquals(
-                    new Object[]{},
-                    Javier.intersect(arr1, arr2, 0)
+            assertEquals(
+                    List.of(),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
 
         @Test
         void bothEmptyJava() {
-            Object[] arr1 = {};
-            Object[] arr2 = {};
+            List<Object> list1 = List.of();
+            List<Object> list2 = List.of();
 
-            assertArrayEquals(
-                    new Object[]{},
-                    Javier.intersect(arr1, arr2, 0)
+            assertEquals(
+                    List.of(),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
 
         @Test
         void duplicatesPreservedJava() {
-            Object[] arr1 = {1, 2, 2, 3};
-            Object[] arr2 = {2, 3};
+            List<Object> list1 = List.of(1, 2, 2, 3);
+            List<Object> list2 = List.of(2, 3);
 
-            assertArrayEquals(
-                    new Object[]{2, 2, 3},
-                    Javier.intersect(arr1, arr2, 0)
+            assertEquals(
+                    List.of(2, 2, 3),
+                    JaviIntersect.intersect(list1, list2)
             );
         }
     }
@@ -189,74 +191,74 @@ class JavierTests {
 
         @Test
         void identicalLists() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {1, 2, 3};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1, 2, 3));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1, 2, 3));
 
-            assertTrue(Javier.same(arr1, arr2));
+            assertTrue(JaviSame.same(list1, list2));
         }
 
         @Test
         void singleElementSame() {
-            Object[] arr1 = {1};
-            Object[] arr2 = {1};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1));
 
-            assertTrue(Javier.same(arr1, arr2));
+            assertTrue(JaviSame.same(list1, list2));
         }
 
         @Test
         void emptyLists() {
-            Object[] arr1 = {};
-            Object[] arr2 = {};
+            ArrayList<Integer> list1 = new ArrayList<>();
+            ArrayList<Integer> list2 = new ArrayList<>();
 
-            assertTrue(Javier.same(arr1, arr2));
+            assertTrue(JaviSame.same(list1, list2));
         }
 
         @Test
         void differentValues() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {1, 2, 4};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1, 2, 3));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1, 2, 4));
 
-            assertFalse(Javier.same(arr1, arr2));
+            assertFalse(JaviSame.same(list1, list2));
         }
 
         @Test
         void firstListShorter() {
-            Object[] arr1 = {1, 2};
-            Object[] arr2 = {1, 2, 3};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1, 2));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1, 2, 3));
 
-            assertFalse(Javier.same(arr1, arr2));
+            assertFalse(JaviSame.same(list1, list2));
         }
 
         @Test
         void secondListShorter() {
-            Object[] arr1 = {1, 2, 3};
-            Object[] arr2 = {1, 2};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1, 2, 3));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1, 2));
 
-            assertFalse(Javier.same(arr1, arr2));
+            assertFalse(JaviSame.same(list1, list2));
         }
 
         @Test
         void completelyDifferentLists() {
-            Object[] arr1 = {"a", "b"};
-            Object[] arr2 = {"x", "y"};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1, 2));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(8, 9));
 
-            assertFalse(Javier.same(arr1, arr2));
+            assertFalse(JaviSame.same(list1, list2));
         }
 
         @Test
         void oneEmptyOneNot() {
-            Object[] arr1 = {};
-            Object[] arr2 = {1};
+            ArrayList<Integer> list1 = new ArrayList<>();
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1));
 
-            assertFalse(Javier.same(arr1, arr2));
+            assertFalse(JaviSame.same(list1, list2));
         }
 
         @Test
         void nestedListsEqual() {
-            Object[] arr1 = {List.of(1, 2), 3};
-            Object[] arr2 = {List.of(1, 2), 3};
+            ArrayList<Integer> list1 = new ArrayList<>(List.of(1, 2, 3));
+            ArrayList<Integer> list2 = new ArrayList<>(List.of(1, 2, 3));
 
-            assertTrue(Javier.same(arr1, arr2));
+            assertTrue(JaviSame.same(list1, list2));
         }
     }
 }
