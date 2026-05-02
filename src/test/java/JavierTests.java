@@ -184,79 +184,79 @@ class JavierTests {
     }
 
     @Nested
-    @DisplayName("Same - Clojure")
-    class SameClojureTests {
+    @DisplayName("Same - Java")
+    class SameJavaTests {
 
         @Test
         void identicalLists() {
-            assertTrue((Boolean) same.invoke(
-                    List.of(1, 2, 3),
-                    List.of(1, 2, 3)
-            ));
+            Object[] arr1 = {1, 2, 3};
+            Object[] arr2 = {1, 2, 3};
+
+            assertTrue(Javier.same(arr1, arr2));
         }
 
         @Test
         void singleElementSame() {
-            assertTrue((Boolean) same.invoke(
-                    List.of(1),
-                    List.of(1)
-            ));
+            Object[] arr1 = {1};
+            Object[] arr2 = {1};
+
+            assertTrue(Javier.same(arr1, arr2));
         }
 
         @Test
         void emptyLists() {
-            assertTrue((Boolean) same.invoke(
-                    List.of(),
-                    List.of()
-            ));
+            Object[] arr1 = {};
+            Object[] arr2 = {};
+
+            assertTrue(Javier.same(arr1, arr2));
         }
 
         @Test
         void differentValues() {
-            assertFalse((Boolean) same.invoke(
-                    List.of(1, 2, 3),
-                    List.of(1, 2, 4)
-            ));
+            Object[] arr1 = {1, 2, 3};
+            Object[] arr2 = {1, 2, 4};
+
+            assertFalse(Javier.same(arr1, arr2));
         }
 
         @Test
         void firstListShorter() {
-            assertFalse((Boolean) same.invoke(
-                    List.of(1, 2),
-                    List.of(1, 2, 3)
-            ));
+            Object[] arr1 = {1, 2};
+            Object[] arr2 = {1, 2, 3};
+
+            assertFalse(Javier.same(arr1, arr2));
         }
 
         @Test
         void secondListShorter() {
-            assertFalse((Boolean) same.invoke(
-                    List.of(1, 2, 3),
-                    List.of(1, 2)
-            ));
+            Object[] arr1 = {1, 2, 3};
+            Object[] arr2 = {1, 2};
+
+            assertFalse(Javier.same(arr1, arr2));
         }
 
         @Test
         void completelyDifferentLists() {
-            assertFalse((Boolean) same.invoke(
-                    List.of("a", "b"),
-                    List.of("x", "y")
-            ));
+            Object[] arr1 = {"a", "b"};
+            Object[] arr2 = {"x", "y"};
+
+            assertFalse(Javier.same(arr1, arr2));
         }
 
         @Test
         void oneEmptyOneNot() {
-            assertFalse((Boolean) same.invoke(
-                    List.of(),
-                    List.of(1)
-            ));
+            Object[] arr1 = {};
+            Object[] arr2 = {1};
+
+            assertFalse(Javier.same(arr1, arr2));
         }
 
         @Test
         void nestedListsEqual() {
-            assertTrue((Boolean) same.invoke(
-                    List.of(List.of(1, 2), 3),
-                    List.of(List.of(1, 2), 3)
-            ));
+            Object[] arr1 = {List.of(1, 2), 3};
+            Object[] arr2 = {List.of(1, 2), 3};
+
+            assertTrue(Javier.same(arr1, arr2));
         }
     }
 }
